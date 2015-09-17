@@ -19,8 +19,18 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['pub_date']
     search_fields = ['question_text']
 
+class UrlInline(admin.TabularInline):
+    model=Urls
+    extra=5
+
+class ApplicationAdmin(admin.ModelAdmin):
+    fields = ['application_name','agency']
+    inlines = [UrlInline]
+    list_filter = ['agency']
+    search_fields = ['application_name']
+
 admin.site.register(Question, QuestionAdmin)
-admin.site.register(Applications)
+admin.site.register(Applications,ApplicationAdmin)
 admin.site.register(Urls)
 
 
