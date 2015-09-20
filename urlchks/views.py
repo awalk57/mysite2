@@ -1,8 +1,8 @@
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, render_to_response
+from django.http import HttpResponseRedirect, request
 from django.core.urlresolvers import reverse
 from django.views import generic
-from .models import Applications, Urls
+from .models import Applications, Urls, ListUrlFilter
 
 # Create your views here.
 class IndexView(generic.ListView):
@@ -15,6 +15,10 @@ class IndexView(generic.ListView):
         """
         return Applications.objects.order_by('agency')[:5]
 
+    def url_list(self):
+        f= ListUrlFilter(request.GET, queryset=Urls.objects.all())
+        return render_to_response('urlchks/template.html',{'filter': f})
+
 
 # class DetailView(generic.DetailView):
 #     model = Question
@@ -24,4 +28,6 @@ class IndexView(generic.ListView):
 # class ResultsView(generic.DetailView):
 #     model = Question
 #     template_name = 'urlchks/results.html'
+
+
 
